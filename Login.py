@@ -2,7 +2,6 @@
 import pygame, pygame.font
 import sys
 import tmpdb
-# import tmpexample
 from pygame.color import THECOLORS
 
 WHITE   = (255,255,255)
@@ -22,9 +21,6 @@ pygame.font.init()
 
 class Login:
     def __init__(self):
-        #id 또는 pw 가 일치할 경우 login 성공일 떄 창 닫기
-        self.id_success = False;
-        self.pw_success = False;
         #프로그램 종료(pygame.quit()) 종료일 떄 창 닫기
         self.done = False;
 
@@ -40,6 +36,8 @@ class Login:
         self.user_check = [0,0]
         self.clock      = pygame.time.Clock()
 
+        #본격적인 로그인 시작
+        # self.LoginScreen()
     def Login_Setting(self):
         global screen
         screen.fill(WHITE)
@@ -77,12 +75,11 @@ class Login:
         screen.blit(sign_up_surface,(self.sign_up_rect.x+2.5,self.sign_up_rect.y+2.5))
 
 
-    #로그인 화면 기본 설정
+    #로그인 처리
     def LoginScreen(self):
-        #로그인 처리
-        #id와 pw가 모두 true값으로 고쳐지면 프로그램 나오기
-        #혹은 done 이 true로 고쳐지면 프로그램 나오기
-        while (not (self.id_success and self.pw_success)) and not self.done:
+        #id와 pw가 모두 일치할 경우 return
+        #done(pygame.quit)이 True일 경우 while 탈출
+        while not self.done:
             self.Login_Setting()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -113,15 +110,16 @@ class Login:
                         else:
                             self.pw_input += event.unicode
 
+                    #enter 키로 한번에 id, pw 값 전달
                     if event.key == pygame.K_RETURN:
-                        #strip 문자 공백 제거 함수 (안써주면 db들어갈 때 2번 째 인자에서 오류 생김)
+                        #strip 문자 앞뒤 공백 제거 함수 (안써주면 db들어갈 때 2번 째 인자에서 오류 생김)
                         self.user_check[0] = self.id_input.strip()
                         self.user_check[1] = self.pw_input.strip()
 
                         print("id : ",self.user_check[0])
                         print("pw : ",self.user_check[1])
 
-                # 로그인에 성공할 경우 user_info를 리턴
+                # 로그인에 성공할 경우 user_check를 리턴
                 if not self.user_check[0]==0 and not self.user_check[1]==0:
                     if tmpdb.login_check(self.user_check[0],self.user_check[1]) == True:
                         print("login success")
@@ -143,10 +141,8 @@ class Login:
             #display 새로고침
             pygame.display.flip()
 
-def main():
-    lg = Login()
-    lg.LoginScreen()
-    # if LoginScreen() == True:
-        # tmpexample.game(screen,user_info)
-
-if __name__ == '__main__':  main()
+# def main():
+#     lg = Login()
+#     lg.LoginScreen()
+#
+# if __name__ == '__main__':  main()
