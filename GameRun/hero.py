@@ -1,5 +1,14 @@
-import pygame as pg
-class Hero(name):
+#---------------------------------------------#
+#               영웅  Class                   #
+#       --------------------------            #
+#       start: 2020-06-15                     #
+#       --------------------------            #
+#                                             #
+#       각 영웅 class                          #
+#---------------------------------------------#
+
+import pygame
+class Hero:
     def __init__(self,name):
         self.name = name
         self.status = ['hp','mp','speed','power']
@@ -76,3 +85,4 @@ class Hero(name):
 
     #skill 구성 // 이 부분을 클래스로 모든 스킬 구현해서 cc 기 등을 구분할 지 아니면 그냥 하나에 다 넣을지 고민중
     def skillSet(self,name):
+        pass

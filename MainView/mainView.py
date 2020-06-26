@@ -1,34 +1,41 @@
 #---------------------------------------------#
 #               메인 화면                      #
 #       --------------------------            #
-#       start: 2020-05-26                     #
+#       start: 2020-06-16                     #
 #       --------------------------            #
 #                                             #
-#      게임 시작 파일 및 로그인 성공 시 화면     #
+#      게임 mainView 및 로그인 성공 시 화면     #
 #      1.Game Start                           #
 #      2.Help                                 #
 #      3.Setting                              #
 #---------------------------------------------#
-import pygame,pygame.font
+
+#system환경 변수에 모듈을 사용하기 위해 **디렉토리**(파일 설정 x / 디렉토리까지만!!)를 설정해줘야 함
+#sys.path.insert(0,new_path) -> 가장 앞에 new_path 경로 저장
+import sys
+# print(sys.path)
+# print(sys.path[0][:-8] + 'GameRun')
+sys.path.insert(0,'C:/Users/user/IndProj/Project-Game/GameRun')
+sys.path.insert(0,'C:/Users/user/IndProj/Project-Game/GameRun/Help')
+sys.path.insert(0,'C:/Users/user/IndProj/Project-Game/GameRun/Setting')
+sys.path.insert(0,'C:/Users/user/IndProj/Project-Game/Common')
+import setting,help
+import run
+
+import pygame, pygame.font
 import login
-screen = login.screen
-font = login.font
+import cmmlib
 
-WHITE   = (255,255,255)
-BLACK   = (0,0,0)
-RED     = (255,0,0)
-GREEN   = (0,255,0)
-BLUE    = (0,0,255)
+screen = cmmlib.screen
+font = cmmlib.font
 
-#위치와 크기를 받아와서 그 중앙값 리턴
-def AlignCenter(text_surface,rect):
-    res = []
-    res.append((rect[0] + rect[2]/2) - text_surface.get_width()/2)
-    res.append((rect[1] + rect[3]/2) - text_surface.get_height()/2)
+WHITE   = cmmlib.WHITE
+BLACK   = cmmlib.BLACK
+RED     = cmmlib.RED
+GREEN   = cmmlib.GREEN
+BLUE    = cmmlib.BLUE
 
-    return  res
-
-def MainView():
+def mainViewScreen():
     global screen
 
     #status 0:mainView / 1:gamestart / 2:help / 3:setting
@@ -37,20 +44,22 @@ def MainView():
 
     #한번만 화면 초기화
     screen.fill(WHITE)
-    gameStart_text_rect = pygame.draw.rect(screen,BLACK,(screen.get_width() - 400,screen.get_height() - 300,200,30),1)#gamestart
-    gameStart_text = "Game Start"
-    gameStart_text_surface = font.render(gameStart_text,True,BLACK)
-    screen.blit(gameStart_text_surface,AlignCenter(gameStart_text_surface,gameStart_text_rect))
 
-    gameHelp_text_rect = pygame.draw.rect(screen,BLACK,(screen.get_width() - 400,screen.get_height() - 250,200,30),1)#help
-    gameHelp_text = "Game Help"
-    gameHelp_text_surface = font.render(gameHelp_text,True,BLACK)
-    screen.blit(gameHelp_text_surface,AlignCenter(gameHelp_text_surface,gameHelp_text_rect))
+    gameStart_text_rect     = pygame.draw.rect(screen,BLACK,(screen.get_width() - 400,screen.get_height() - 300,200,30),1)#gamestart
+    gameHelp_text_rect      = pygame.draw.rect(screen,BLACK,(screen.get_width() - 400,screen.get_height() - 250,200,30),1)#help
+    gameSetting_text_rect   = pygame.draw.rect(screen,BLACK,(screen.get_width() - 400,screen.get_height() - 200,200,30),1)#setting
 
-    gameSetting_text_rect = pygame.draw.rect(screen,BLACK,(screen.get_width() - 400,screen.get_height() - 200,200,30),1)#setting
-    gameSetting_text = "Game Setting"
-    gameSetting_text_surface = font.render(gameSetting_text,True,BLACK)
-    screen.blit(gameSetting_text_surface,AlignCenter(gameSetting_text_surface,gameSetting_text_rect))
+    gameStart_text      = "Game Start"
+    gameHelp_text       = "Game Help"
+    gameSetting_text    = "Game Setting"
+
+    gameStart_text_surface      = font.render(gameStart_text,True,BLACK)
+    gameHelp_text_surface       = font.render(gameHelp_text,True,BLACK)
+    gameSetting_text_surface    = font.render(gameSetting_text,True,BLACK)
+
+    screen.blit(gameStart_text_surface,     cmmlib.alignCenter(gameStart_text_surface,gameStart_text_rect))
+    screen.blit(gameHelp_text_surface,      cmmlib.alignCenter(gameHelp_text_surface,gameHelp_text_rect))
+    screen.blit(gameSetting_text_surface,   cmmlib.alignCenter(gameSetting_text_surface,gameSetting_text_rect))
 
     pygame.display.flip()
 
@@ -73,7 +82,7 @@ def MainView():
                     done = True
     return status
 
-class game:
+class MainView:
     def __init__(self):
         self.state  = ''
         self.id     = ''
@@ -83,7 +92,7 @@ class game:
     def system(self):
         if self.usr[0] == '':
             usr_info = login.Login()
-            if usr_info.LoginScreen():
+            if usr_info.loginScreen():
                 self.usr[0] = 0
                 self.usr[1] = usr_info.user_check
                 print('self.usr : ',self.usr)
@@ -92,23 +101,20 @@ class game:
         while(self.usr[0] == 0):
             print('mainView')
             #usr.status 에 mainView에서 받아온 상태값을 저장
-            self.usr[0] = MainView()
-            pass
+            self.usr[0] = mainViewScreen()
 
         if self.usr[0] == 1:
             print('game start')
-            pass
+            rungame = run.Run()
 
         if self.usr[0] == 2:
             print('game help')
-            pass
 
         if self.usr[0] == 3:
             print('game setting')
-            pass
 
 def main():
-    user = game()
+    user = MainView()
     user.system()
 
 

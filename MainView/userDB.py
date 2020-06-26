@@ -48,7 +48,7 @@ def select_max_id_num():
             return maxIdNum[0]
     except Exception as e:
         print(e)
-#
+
 # def main():
     # print('select_max_id_num : ', select_max_id_num())
 #     user_id = 'test1'

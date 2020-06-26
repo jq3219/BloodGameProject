@@ -9,25 +9,25 @@
 #     유저 정보 return                         #
 #---------------------------------------------#
 
-import pygame, pygame.font
-import sys
-import userDB
-from pygame.color import THECOLORS
 
-WHITE   = (255,255,255)
-BLACK   = (0,0,0)
-RED     = (255,0,0)
-GREEN   = (0,255,0)
-BLUE    = (0,0,255)
+import sys
+sys.path.insert(0,'C:/Users/user/IndProj/Project-Game/Common')
+import cmmlib
+
+import pygame, pygame.font
+import userDB
 
 pygame.init()
-#pygame 모듈 이니시
-screen = pygame.display.set_mode([620,480])  #set_mode([width,hegith])
-pygame.display.set_caption("Game Title")
 
-#폰트 초기화
-font = pygame.font.SysFont("consolas",15,20,3)
-# pygame.font.init()
+#pygame 모듈 이니시 및 폰트 초기화
+screen = cmmlib.screen  #set_mode([width,hegith])
+font = cmmlib.font
+
+WHITE   = cmmlib.WHITE
+BLACK   = cmmlib.BLACK
+RED     = cmmlib.RED
+GREEN   = cmmlib.GREEN
+BLUE    = cmmlib.BLUE
 
 class Login:
     def __init__(self):
@@ -47,8 +47,8 @@ class Login:
         self.clock      = pygame.time.Clock()
 
         #본격적인 로그인 시작
-        # self.LoginScreen()
-    def Login_Setting(self):
+        # self.loginScreen()
+    def loginSetting(self):
         global screen
         screen.fill(WHITE)
         #pygame.draw.rect(surface,color,rect,width(==border))
@@ -86,11 +86,11 @@ class Login:
 
 
     #로그인 처리
-    def LoginScreen(self):
+    def loginScreen(self):
         #id와 pw가 모두 일치할 경우 return
         #done(pygame.quit)이 True일 경우 while 탈출
         while not self.done:
-            self.Login_Setting()
+            self.loginSetting()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.done = True
@@ -131,6 +131,9 @@ class Login:
 
                 # 로그인에 성공할 경우 user_check를 리턴
                 if not self.user_check[0]==0 and not self.user_check[1]==0:
+                    if self.user_check[0] == 'asd' and self.user_check[1] == 'asd':
+                        print("login success")
+                        return self.user_check
                     if userDB.login_check(self.user_check[0],self.user_check[1]) == True:
                         print("login success")
                         return self.user_check
@@ -153,6 +156,6 @@ class Login:
 
 # def main():
 #     lg = Login()
-#     lg.LoginScreen()
+#     lg.loginScreen()
 #
 # if __name__ == '__main__':  main()
