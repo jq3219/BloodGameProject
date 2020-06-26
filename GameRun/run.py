@@ -21,7 +21,7 @@ screen  = cmmlib.screen
 font    = cmmlib.font2
 
 #현재 시각을 저장
-start_time = pygame.time.get_ticks()
+START_TIME = pygame.time.get_ticks()
 
 WHITE   = cmmlib.WHITE
 BLACK   = cmmlib.BLACK
@@ -135,15 +135,14 @@ class Run:
         self.player_rect.append(player1_rect)
         self.player_rect.append(player2_rect)
 
-
+    #대기방
     def ready_room(self):
         self.ready_room_setting()
-        num = 0
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
-                    pygame.quit()
+                    running = False
 
                 if event.type==pygame.MOUSEBUTTONDOWN:
                     if self.add_btn_rect.collidepoint(event.pos):
@@ -152,9 +151,8 @@ class Run:
                         self.delPlayer()
                     elif self.start_btn_rect.collidepoint(event.pos):
                         self.game_start()
-                    pass
 
-            pygame.display.update()
+            pygame.display.flip()
 
     def game_start(self):
         global screen, TEAM
@@ -172,13 +170,29 @@ class Run:
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
+                    running = False
 
                 if event.type == pygame.KEYDOWN:
-                    pass
+                    #임시로 백스페이스 누르면 세팅방 호출(확인용)
+                    if event.key == pygame.K_BACKSPACE:
+                        #org_pos을 전역변수로 사용하기 위해 임시로 베이스 이미지 하나 꺼내서 사이즈 설정해줌
+                        base_img = pygame.image.load('C:/Users/user/IndProj/Project-Game/Img/base1.PNG')
+                        base_size = pygame.transform.scale(base_img,(int(screen.get_width()/15),int(screen.get_height()/12)))
 
+                        #기본 위치 -----> 11시 / 1시 / 5시 / 7시 (각 모퉁이)
+                        org_x_pos = [0,screen.get_width() - base_size.get_width()]
+                        org_y_pos = [0,screen.get_height() - base_size.get_height()]
 
-            pygame.display.update()
+                        base.org_pos.clear()
+                        base.org_pos = [
+                            [org_x_pos[0],org_y_pos[0]],
+                            [org_x_pos[0],org_y_pos[1]],
+                            [org_x_pos[1],org_y_pos[0]],
+                            [org_x_pos[1],org_y_pos[1]]
+                        ]
+                        self.__init__()
+
+            pygame.display.flip()
 
 if __name__ == '__main__':
     run = Run()

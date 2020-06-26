@@ -17,8 +17,6 @@ import cmmlib
 import pygame, pygame.font
 import userDB
 
-pygame.init()
-
 #pygame 모듈 이니시 및 폰트 초기화
 screen = cmmlib.screen  #set_mode([width,hegith])
 font = cmmlib.font

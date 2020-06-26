@@ -6,8 +6,10 @@ RED     = (255,0,0)
 GREEN   = (0,255,0)
 BLUE    = (0,0,255)
 
-screen = pygame.display.set_mode([620,480])  #set_mode([width,hegith])
-pygame.display.set_caption("Game Title")
+pygame.init()
+
+screen  = pygame.display.set_mode([620,480])  #set_mode([width,hegith])
+caption = pygame.display.set_caption("Game Title")
 
 font = pygame.font.init()
 font = pygame.font.SysFont("consolas",15,20,3)
