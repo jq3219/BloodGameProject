@@ -63,24 +63,3 @@ class Base:
 
         #self.base_info[3]=size(type : surface) / self.base_info[2]=랜덤 위치(type : surface)에 삽입
         screen.blit(base_size, self.base_info[2][0])
-
-def main():
-    pygame.init()
-
-    running = True
-
-    base = Base(screen,'Blue')
-    enemy_base =Base(screen,'Red')
-
-    pygame.display.update()
-
-    while running:
-        for event in pygame.event.type():
-            if event.MOUSEBUTTONDOWN:
-                if event.quit:
-                    running = False
-                    pygame.quit()
-
-
-if __name__ =='__main__':
-    main()
